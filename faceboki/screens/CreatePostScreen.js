@@ -1,19 +1,25 @@
 // screens/CreatePostScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import styles from './CreatePostScreenStyles';
 
 const CreatePostScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState('');
 
-  const selectImage = () => {
-    launchImageLibrary({}, (response) => {
-      if (response.assets && response.assets.length > 0) {
-        setImage(response.assets[0].uri);
-      }
+  const selectImage = async () => {
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
     });
+    
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
   };
 
   const handlePost = () => {

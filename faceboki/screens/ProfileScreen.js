@@ -1,45 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
-import { getProfile } from '../services/accountService';
+import React from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from './ProfileScreenStyles';
 
 const ProfileScreen = ({ route, navigation, setIsLoggedIn }) => {
-  const [profile, setProfile] = useState({});
-  const { token } = route.params;
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const data = await getProfile(token);
-        setProfile(data);
-      } catch (error) {
-        Alert.alert('Error', 'Failed to load profile.');
-      }
-    };
-
-    fetchProfile();
-  }, []);
+  const user = route.params?.user || {};
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    navigation.replace('Home');
+    navigation.replace('App');
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>User Profile</Text>
-      {profile.profileImage ? (
-        <Image source={{ uri: profile.profileImage }} style={styles.profileImage} />
+      {user.profileImage ? (
+        <Image source={{ uri: `http://10.0.2.2:5000/${user.profileImage}` }} style={styles.profileImage} />
       ) : (
         <Text style={styles.noImageText}>No profile image selected</Text>
       )}
       <View style={styles.profileItem}>
         <Text style={styles.label}>Name:</Text>
-        <Text style={styles.value}>{profile.name || 'N/A'}</Text>
+        <Text style={styles.value}>{user.name || 'N/A'}</Text>
       </View>
       <View style={styles.profileItem}>
         <Text style={styles.label}>Email:</Text>
-        <Text style={styles.value}>{profile.email || 'N/A'}</Text>
+        <Text style={styles.value}>{user.email || 'N/A'}</Text>
       </View>
       <TouchableOpacity
         style={styles.button}

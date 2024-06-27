@@ -10,9 +10,13 @@ export const login = async (email, password) => {
   }
 };
 
-export const register = async (name, email, password) => {
+export const register = async (formData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/accounts/create`, { name, email, password });
+    const response = await axios.post(`${API_BASE_URL}/auth/register`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     console.log(response.data);
     return response.data;
   } catch (error) {

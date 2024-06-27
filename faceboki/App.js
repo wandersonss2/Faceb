@@ -1,4 +1,3 @@
-// App.js
 import * as React from 'react';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,7 +14,8 @@ import CreatePostScreen from './screens/CreatePostScreen';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function MyTabs({ setIsLoggedIn }) {
+function MyTabs({ setIsLoggedIn, route }) {
+  const { token, user } = route.params || {};
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -39,7 +39,7 @@ function MyTabs({ setIsLoggedIn }) {
       <Tab.Screen name="Feed" component={FeedScreen} />
       <Tab.Screen name="CreatePost" component={CreatePostScreen} />
       <Tab.Screen name="Profile">
-        {(props) => <ProfileScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+        {(props) => <ProfileScreen {...props} setIsLoggedIn={setIsLoggedIn} token={token} user={user} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

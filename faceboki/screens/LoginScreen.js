@@ -10,9 +10,11 @@ const LoginScreen = ({ navigation, setIsLoggedIn }) => {
   const handleLogin = async () => {
     try {
       const data = await login(email, password);
-      // Salve o token de autenticação conforme necessário
       setIsLoggedIn(true);
-      navigation.replace('App');
+      navigation.replace('App', {
+        screen: 'Profile',
+        params: { token: data.token, user: data.user }
+      });
     } catch (error) {
       Alert.alert('Login Failed', error.error || 'Please try again.');
     }

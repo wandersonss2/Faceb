@@ -43,6 +43,13 @@ class AuthService {
       expiresIn: '1h',
     });
   }
+
+  async getUserByEmail(email) {
+    console.log(email);
+    return await accountRepository.findByEmail(email);
+  }
 }
+
+
 
 module.exports = new AuthService();
